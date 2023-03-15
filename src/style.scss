@@ -1,0 +1,205 @@
+// FONTS //
+/* prompt-800 - latin */
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Prompt';
+    font-style: normal;
+    font-weight: 800;
+    src: url('./assets/fonts/prompt-v10-latin/prompt-v10-latin-800.woff2') format('woff2'), /* Chrome 36+, Opera 23+, Firefox 39+ */
+         url('./assets/fonts/prompt-v10-latin/prompt-v10-latin-800.woff') format('woff'); /* Chrome 5+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  }
+
+/* mada-regular - latin */
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Mada';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./assets/fonts/mada-v18-latin/mada-v18-latin-regular.woff2') format('woff2'), /* Chrome 36+, Opera 23+, Firefox 39+ */
+         url('./assets/fonts/mada-v18-latin/mada-v18-latin-regular.woff') format('woff'); /* Chrome 5+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  }
+
+// VARIABLES //
+$dark-bg : #5A7684;
+$light-bg : #F4F4ED;
+$light-font: #FFFFFB;
+$dark-font : rgb(48, 52, 63);
+$padding-top : 2rem;
+$padding-left: 1.5rem;
+
+:root {
+    font-size: 62.5%;
+    
+    .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 48
+    }
+    input[type=text] {
+        border-style: none;
+        padding: 1rem 2rem;   
+        background-color: $light-bg;
+        color:$dark-font;
+    }
+
+    input[type=text]:focus{
+        outline:none
+    }
+    input::placeholder{
+        color: rgba($dark-font, 0.8);
+    }
+
+
+    body {
+        margin:0;
+        width: 100vw;
+        height: 100vh;
+        display:grid;
+        grid-template-columns: 20% 1fr;
+        grid-template-rows: 10rem 1fr 5rem;
+        font-size: 5rem;
+        font-family: "Mada";
+    
+        header {
+            grid-column: span 2;
+            background-color: $dark-bg;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+
+            img {
+                width: 5rem;
+            }
+
+            h1 {
+                font-family: 'Prompt';
+                color : $light-font;
+                font-size: 5rem;
+                text-align: center;
+            }
+        
+        }
+        .sidebar {
+            background-color: $light-bg;
+            padding-left: 1.5rem;
+            padding-top: $padding-top;
+            padding-right: $padding-left;
+            padding-bottom: $padding-top;
+            font-size: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 5rem;
+            ul{
+                list-style: none;
+                display: grid;
+                grid-template-columns: auto;
+                grid-template-rows: auto;
+                gap:1.5rem;
+                padding-left: $padding-left;
+                li:hover {
+                    cursor: pointer;
+                }
+                li.active {
+                    font-weight: 800;
+                }
+
+            }
+            button {
+                margin-top: auto;
+                border: none;
+                background-color: inherit;
+                color: rgba($dark-font, 0.8);
+                font-size: 1.5rem;
+                display: flex;
+                align-items: center;
+            }
+            input[type=text] {
+                display: none;
+                font-size: 2rem;
+                width: 20rem;
+                padding-left: 0;
+            }
+            input[type=text]::placeholder {
+                font-size: 1.5rem;
+            }
+        }
+
+        .main-content {
+            padding-left: 10rem;
+            padding-top: $padding-top;
+            font-size: 2rem;
+            display:flex;
+            flex-direction: column;
+            align-items: center;
+            h2 {
+                font-family: "Prompt";
+                font-size: 3.5rem;
+                color: $dark-bg;
+                align-self: flex-start;
+            }
+            div.todolist {
+                list-style: none;
+                display: flex;
+                flex-direction: column;
+                width : 65vw;
+                padding :0;
+                .task{
+                    padding-left: $padding-left;
+                    padding-top: $padding-top;
+                    padding-bottom: $padding-top;
+                    background-color: $dark-bg;
+                    color: $light-font;
+                }
+                div.task input[type="checkbox"] {
+                    appearance: none;
+                }
+                div.task:hover  {
+                    background-color: $light-bg;
+                    color: $dark-font;
+                }
+                div.task input:checked + label{
+                    text-decoration: line-through ;
+                }
+                div.task label:hover {
+                    cursor: pointer;
+                }
+                div.task:has(> input:checked){
+                    background-color: $light-bg;
+                    color:$dark-font
+                }
+                input[type=text] {
+                    border-style: none;
+                    padding: 1rem 2rem;   
+                    background-color: $light-bg;
+                    color:$dark-font;
+                    height: 6.6rem;
+                    font-size: 2rem;
+                                   
+                }
+
+                
+                
+            }
+            
+        }
+
+        footer {
+            background-color: $dark-bg;
+            grid-column: span 2;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color : $light-font;
+        }
+    }
+}
+
+
+
+
+
+
