@@ -19,7 +19,10 @@ export default class Todo {
         return this.projects.find((project) => project.getName() == projectName)
     }
 
-    addProject(project){
-        this.projects.push(project)
+    addProject(projectToAdd){
+        if (!(this.projects.find(project => project.getName() == projectToAdd.name))){
+            return this.projects.push(new Project(projectToAdd.name))
+        }
+        
     }
 }

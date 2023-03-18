@@ -1,3 +1,4 @@
+import Task from "./Task"
 export default class Project {
     constructor(name){
         this.name = name
@@ -20,7 +21,18 @@ export default class Project {
         this.tasks = tasks
     }
 
-    addTask(task){
-        this.tasks.push(task)
+    addTask(taskToAdd){
+        if (!(this.tasks.find(task => task.getName() == taskToAdd.name))){
+            return this.tasks.push(taskToAdd)
+        }
+        
     }
+
+    getTask(taskName){
+        return this.tasks.find(task => task.getName() === taskName)
+    }
+
+
+
+
 }
