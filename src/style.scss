@@ -101,6 +101,11 @@ $padding-left: 1.5rem;
                 grid-template-rows: auto;
                 gap:1.5rem;
                 padding-left: $padding-left;
+                li {
+                    display: flex;
+                    gap : 1rem;
+                    align-items: center;
+                }
                 li:hover {
                     cursor: pointer;
                 }
@@ -147,15 +152,14 @@ $padding-left: 1.5rem;
                 list-style: none;
                 display: flex;
                 flex-direction: column;
-                width : 65vw;
+                width :60rem;
                 padding :0;
                 overflow: hidden;
                 .task{
-                    padding-left: $padding-left;
-                    padding-top: $padding-top;
-                    padding-bottom: $padding-top;
+                    padding: $padding-left $padding-top;
                     background-color: $dark-bg;
                     color: $light-font;
+                    height: 4.6rem;
                 }
                 div.task input[type="checkbox"] {
                     appearance: none;
@@ -164,10 +168,18 @@ $padding-left: 1.5rem;
                     background-color: $light-bg;
                     color: $dark-font;
                 }
+                div.task {
+                    display: flex;
+                    align-items: center;
+                    padding-right: $padding-left;
+                }
+                div.task span {
+                    margin-left: auto;
+                }
                 div.task input:checked + label{
                     text-decoration: line-through ;
                 }
-                div.task label:hover {
+                div.task label:hover, div.task span:hover {
                     cursor: pointer;
                 }
                 div.task:has(> input:checked){
@@ -179,9 +191,7 @@ $padding-left: 1.5rem;
                     padding: 1rem 2rem;   
                     background-color: $light-bg;
                     color:$dark-font;
-                    height: 4.6rem;
-                    font-size: 2rem;
-                                   
+                    font-size: 2rem;                
                 }
                 span#validation-error {
                     margin-top: 1rem;

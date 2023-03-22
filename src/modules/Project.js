@@ -25,11 +25,14 @@ export default class Project {
         if (!(this.tasks.find(task => task.getName() == taskToAdd.name))){
             return this.tasks.push(taskToAdd)
         }
-        
     }
 
     getTask(taskName){
         return this.tasks.find(task => task.getName() === taskName)
+    }
+
+    removeTask(taskName){
+        this.tasks = this.tasks.filter((task) => task.name !== taskName)
     }
 
 

@@ -81,6 +81,11 @@
   gap: 1.5rem;
   padding-left: 1.5rem;
 }
+:root body .sidebar ul li {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
 :root body .sidebar ul li:hover {
   cursor: pointer;
 }
@@ -123,16 +128,15 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  width: 65vw;
+  width: 60rem;
   padding: 0;
   overflow: hidden;
 }
 :root body .main-content div.todolist .task {
-  padding-left: 1.5rem;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  padding: 1.5rem 2rem;
   background-color: #5A7684;
   color: #FFFFFB;
+  height: 4.6rem;
 }
 :root body .main-content div.todolist div.task input[type=checkbox] {
   appearance: none;
@@ -141,10 +145,18 @@
   background-color: #F4F4ED;
   color: rgb(48, 52, 63);
 }
+:root body .main-content div.todolist div.task {
+  display: flex;
+  align-items: center;
+  padding-right: 1.5rem;
+}
+:root body .main-content div.todolist div.task span {
+  margin-left: auto;
+}
 :root body .main-content div.todolist div.task input:checked + label {
   text-decoration: line-through;
 }
-:root body .main-content div.todolist div.task label:hover {
+:root body .main-content div.todolist div.task label:hover, :root body .main-content div.todolist div.task span:hover {
   cursor: pointer;
 }
 :root body .main-content div.todolist div.task:has(> input:checked) {
@@ -156,7 +168,6 @@
   padding: 1rem 2rem;
   background-color: #F4F4ED;
   color: rgb(48, 52, 63);
-  height: 4.6rem;
   font-size: 2rem;
 }
 :root body .main-content div.todolist span#validation-error {
