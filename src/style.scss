@@ -59,6 +59,8 @@ $padding-left: 1.5rem;
         color: red;
     }
 
+    
+
     body {
         margin:0;
         width: 100vw;
@@ -111,6 +113,7 @@ $padding-left: 1.5rem;
                     gap : 1rem;
                     align-items: center;
                 }
+                
                 li:hover {
                     cursor: pointer;
                 }
@@ -118,6 +121,11 @@ $padding-left: 1.5rem;
                     font-weight: 800;
                 }
 
+            }
+            .custom {
+                li span:last-of-type {
+                    margin-left: auto;
+                }
             }
             button {
                 margin-top: auto;
@@ -137,9 +145,6 @@ $padding-left: 1.5rem;
             input[type=text]::placeholder {
                 font-size: 1.5rem;
             }
-            // span.error.project {
-            //     display: flex;
-            // }
 
         }
 

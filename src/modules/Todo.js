@@ -25,4 +25,8 @@ export default class Todo {
         }
         
     }
+
+    removeProject(projectName){
+        this.projects = this.projects.filter((project) => project.name !== projectName)
+    }
 }

@@ -46,4 +46,10 @@ export default class Storage {
         Storage.saveData(todo)
 
     }
+
+    static removeProject(projectName){
+        const todo = Storage.getTodo().todolist
+        todo.removeProject(projectName)
+        Storage.saveData(todo)
+    }
 }

@@ -97,6 +97,9 @@
 :root body .sidebar ul li.active {
   font-weight: 800;
 }
+:root body .sidebar .custom li span:last-of-type {
+  margin-left: auto;
+}
 :root body .sidebar button {
   margin-top: auto;
   border: none;

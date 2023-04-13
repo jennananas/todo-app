@@ -17,8 +17,8 @@ export default class UI {
     }
 
     static onLoad(){
-        const DefaultProject = new Project("Default")
-        Storage.addProject(DefaultProject)
+        // const DefaultProject = new Project("Default")
+        // Storage.addProject(DefaultProject)
         this.getDefaultData().todolist.getProjects().forEach(project => {
             if (!document.getElementById(project.getName())){
                 UI.createProjectDOM(project)
@@ -37,6 +37,7 @@ export default class UI {
         projectElem.innerHTML = `
         <span class="material-symbols-outlined">inventory_2</span>
         ${project.getName()}
+        <span class="material-symbols-outlined delete project">delete</span>
         `
         projectElem.id = project.getName()
         // projectElem.textContent = project.getName()
@@ -44,7 +45,8 @@ export default class UI {
             this.getDOMElements().defaultProjectDiv.appendChild(projectElem)
         } else {
             this.getDOMElements().customProjectDiv.insertBefore(projectElem, document.querySelector(".project.input"))
-            }
+        }
+        UI.deleteProjectEvent()
             
     }
 
@@ -68,22 +70,23 @@ export default class UI {
         taskDiv.innerHTML = `
             <input type="checkbox" id='${taskName}' class="task-item">
             <label for='${taskName}'>${taskName}</label>
-            <span class="material-symbols-outlined delete">
+            <span class="material-symbols-outlined delete task">
             delete
             </span>
         `
         tasksList.insertBefore(taskDiv, tasksList.lastElementChild.previousElementSibling)
+        UI.deleteTaskEvent()
+
     }
 
 
-    static setActive(project){ 
-        const currentProject = this.getDOMElements().currentProject
-        if (project.textContent == currentProject.textContent){
-            null
-        } else {
-            project.classList.add("active")
-            currentProject.classList.remove("active")
-        }
+    static setActive(projectSelected){ 
+        const projects = document.querySelectorAll(".projects")
+        projects.forEach(project => {
+            Array.from(project.children).filter(child => child.nodeName == "LI").forEach(child => child.classList.remove("active"))
+            // project.children.forEach(child => console.log(child))
+        })
+        projectSelected.classList.add("active")
     }
 
     static setTitle(project){ 
@@ -131,7 +134,12 @@ export default class UI {
     static addEventListener(){
         this.getDOMElements().projects.forEach(
             (project) => project.addEventListener("click", (e) => {
-                UI.handleProjectClick(e.target.closest("li"))
+                // console.log(e.target.nodeName)
+                if (e.target.nodeName != "SPAN"){
+                    // console.log(e.target)
+                    UI.setActive(e.target.closest("li"))
+                    UI.handleProjectClick(e.target.closest("li"))
+                }
             })
             )
         this.getDOMElements().btnAddProject.addEventListener("click", () => {
@@ -139,9 +147,11 @@ export default class UI {
             addProjectInput.style.display = "flex"
             addProjectInput.focus()
             addProjectInput.addEventListener("keydown", e => {
+                this.getDOMElements().errorMessageProject.textContent = ""
                 if (e.key == "Escape"){
                     e.target.value = ""
                     addProjectInput.style.display = "none"
+                    this.getDOMElements().errorMessageProject.style.display = none
                 } else if (e.key == "Enter") {
                     const newProjectName = e.target.value
                     if (this.getDefaultData().todolist.getProject(newProjectName)){
@@ -149,20 +159,21 @@ export default class UI {
                     } else {
                         let validation = UI.checkInput(newProjectName)
                     if (!validation) {
-                        console.log("project name is " + newProjectName)
                         const newProject = new Project(newProjectName)
                         UI.createProjectDOM(newProject)
                         Storage.addProject(newProject)
                         e.target.value = ""
                         addProjectInput.style.display = "none"
+                        this.getDOMElements().errorMessageProject.textContent = ""
+                    // this.getDOMElements().errorMessageProject.style.display = none
                     } else {
-                        this.getDOMElements().errorMessageProject.textContent = validation
+                        // this.getDOMElements().errorMessageProject.textContent = validation
                         }
                     }
                     
                 } else {
                     this.getDOMElements().errorMessageProject.textContent = ""
-                    this.getDOMElements().errorMessageProject.style.display = none
+                    // this.getDOMElements().errorMessageProject.style.display = none
                 }
             })
             
@@ -172,18 +183,28 @@ export default class UI {
                 const currentProjectName = UI.getDOMElements().currentProject.id
                 const currentProject = this.getDefaultData().todolist.getProject(currentProjectName)
                 const newTaskName = e.target.value
-                let inputValidation = UI.checkInput(newTaskName)
-                if (!inputValidation){
-                    this.submitTaskModal(currentProject, newTaskName)
-                    this.deleteTaskEvent()
-                } else {
-                    this.getDOMElements().errorMessageTask.textContent = inputValidation
+                if (currentProject.getTask(newTaskName)){
+                    this.getDOMElements().errorMessageTask.style.display = "flex"
+                    this.getDOMElements().errorMessageTask.textContent = "Task already exists" 
                     
-                } 
-                } else {
-                    this.getDOMElements().errorMessageTask.textContent = ""
-                    this.getDOMElements().errorMessageTask.style.display = none
                 }
+                else { // On ajoute la tache
+                    let inputValidation = UI.checkInput(newTaskName)
+                    if (!inputValidation){
+                        const newTask = new Task(newTaskName)
+                        currentProject.addTask(newTask)
+                        UI.getDOMElements().taskInput.value = ""
+                        UI.createTaskDOM(newTask)
+                        UI.addEventListener()
+                        Storage.addTask(currentProject.name, newTask)
+                    } else {
+                        this.getDOMElements().errorMessageTask.textContent = inputValidation
+                    } 
+                }
+            } else {
+                this.getDOMElements().errorMessageTask.textContent = ""
+                this.getDOMElements().errorMessageTask.style.display = "none"
+            }
 
             
     })
@@ -203,28 +224,12 @@ export default class UI {
 
 
 
-    static submitTaskModal(currentProject,newTaskName){
-        if (currentProject.getTask(newTaskName)){
-            this.getDOMElements().errorMessageTask.textContent = "Task already exists"
-        } else {
-            const newTask = new Task(newTaskName)
-            currentProject.addTask(newTask)
-            this.getDOMElements().taskInput.value = ""
-            UI.createTaskDOM(newTask)
-            UI.addEventListener()
-            Storage.addTask(currentProject.name, newTask)
-
-        }
-    }
-
-
     static hideDiv(div){
         div.display = "none"
     }
 
 
     static handleProjectClick(projectClicked){
-        UI.setActive(projectClicked)
         UI.setTitle(projectClicked)
         const currentProject = UI.getDefaultData().todolist.getProject(projectClicked.id)
         UI.resetTaskList()
@@ -236,17 +241,25 @@ export default class UI {
 
     static deleteTaskEvent(){
         const currentProject = this.getDOMElements().currentProject.id
-        const deleteBtn = document.querySelectorAll(".delete")
+        const deleteBtn = document.querySelectorAll(".delete.task")
         deleteBtn.forEach(btn => btn.addEventListener("click", (e) => {
             const taskName = e.target.previousElementSibling.getAttribute("for")
             Storage.removeTask(currentProject, taskName)
             e.target.parentNode.remove()
         }))
     }
-    static handleKeyboard(){
-        // document.addEventListener
 
+    static deleteProjectEvent(){
+        const deleteBtn = document.querySelectorAll(".delete.project")
+        deleteBtn.forEach(btn => btn.addEventListener("click", e => {
+            const projectName = e.target.parentNode.id
+            Storage.removeProject(projectName)
+            e.target.parentNode.remove()
+            const defaultProject = document.getElementById("Inbox")
+            UI.handleProjectClick(defaultProject)
+        }))
     }
+
 }
 
 
