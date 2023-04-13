@@ -27,13 +27,18 @@
   color: rgb(48, 52, 63);
 }
 :root input[type=text]:placeholder-shown:focus {
-  outline: red 1px solid;
+  outline: black 1px solid;
 }
 :root input[type=text]:focus:not(:placeholder-shown) {
   outline: none;
 }
 :root input::placeholder {
   color: rgba(48, 52, 63, 0.8);
+}
+:root span.error {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  color: red;
 }
 :root body {
   margin: 0;
@@ -105,7 +110,7 @@
   display: none;
   font-size: 2rem;
   width: 20rem;
-  padding-left: 0;
+  padding-left: 1rem;
 }
 :root body .sidebar input[type=text]::placeholder {
   font-size: 1.5rem;
@@ -132,18 +137,18 @@
   padding: 0;
   overflow: hidden;
 }
-:root body .main-content div.todolist .task {
+:root body .main-content div.todolist .task:not(.error) {
   padding: 1.5rem 2rem;
-  background-color: #5A7684;
-  color: #FFFFFB;
+  background-color: #F4F4ED;
+  color: rgb(48, 52, 63);
   height: 4.6rem;
 }
 :root body .main-content div.todolist div.task input[type=checkbox] {
   appearance: none;
 }
 :root body .main-content div.todolist div.task:hover {
-  background-color: #F4F4ED;
-  color: rgb(48, 52, 63);
+  background-color: #5A7684;
+  color: #FFFFFB;
 }
 :root body .main-content div.todolist div.task {
   display: flex;
@@ -163,17 +168,15 @@
   background-color: #F4F4ED;
   color: rgb(48, 52, 63);
 }
-:root body .main-content div.todolist input[type=text] {
+:root body .main-content div.todolist input[type=text].task {
   border-style: none;
   padding: 1rem 2rem;
-  background-color: #F4F4ED;
-  color: rgb(48, 52, 63);
+  background-color: #5A7684;
+  color: #FFFFFB;
   font-size: 2rem;
 }
-:root body .main-content div.todolist span#validation-error {
-  margin-top: 1rem;
-  font-size: 1.5rem;
-  color: red;
+:root body .main-content div.todolist input[type=text]::placeholder {
+  color: #FFFFFB;
 }
 :root body footer {
   background-color: #5A7684;

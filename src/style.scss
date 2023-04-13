@@ -44,7 +44,7 @@ $padding-left: 1.5rem;
         color:$dark-font;
     }
     input[type=text]:placeholder-shown:focus{
-        outline: red 1px solid;
+        outline: black 1px solid;
     }
 
     input[type=text]:focus:not(:placeholder-shown){
@@ -52,6 +52,11 @@ $padding-left: 1.5rem;
     }
     input::placeholder{
         color: rgba($dark-font, 0.8);
+    }
+    span.error {
+        margin-top: 1rem;
+        font-size: 1.5rem;
+        color: red;
     }
 
     body {
@@ -127,11 +132,14 @@ $padding-left: 1.5rem;
                 display: none;
                 font-size: 2rem;
                 width: 20rem;
-                padding-left: 0;
+                padding-left: 1rem;
             }
             input[type=text]::placeholder {
                 font-size: 1.5rem;
             }
+            // span.error.project {
+            //     display: flex;
+            // }
 
         }
 
@@ -155,18 +163,18 @@ $padding-left: 1.5rem;
                 width :60rem;
                 padding :0;
                 overflow: hidden;
-                .task{
+                .task:not(.error){
                     padding: $padding-left $padding-top;
-                    background-color: $dark-bg;
-                    color: $light-font;
+                    background-color: $light-bg;
+                    color: $dark-font;
                     height: 4.6rem;
                 }
                 div.task input[type="checkbox"] {
                     appearance: none;
                 }
                 div.task:hover  {
-                    background-color: $light-bg;
-                    color: $dark-font;
+                    background-color: $dark-bg;
+                    color: $light-font;
                 }
                 div.task {
                     display: flex;
@@ -186,18 +194,17 @@ $padding-left: 1.5rem;
                     background-color: $light-bg;
                     color:$dark-font
                 }
-                input[type=text] {
+                input[type=text].task {
                     border-style: none;
                     padding: 1rem 2rem;   
-                    background-color: $light-bg;
-                    color:$dark-font;
+                    background-color: $dark-bg;
+                    color:$light-font;
                     font-size: 2rem;                
                 }
-                span#validation-error {
-                    margin-top: 1rem;
-                    font-size: 1.5rem;
-                    color: red;
+                input[type=text]::placeholder{
+                    color: $light-font
                 }
+
 
                 
                 

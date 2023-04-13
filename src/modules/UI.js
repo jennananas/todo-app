@@ -2,6 +2,7 @@ import Task from "./Task"
 import Project from "./Project"
 import Todo from "./Todo"
 import Storage from "./Storage"
+import { add } from "lodash"
 export default class UI {
 
     static getDefaultData(){
@@ -16,6 +17,8 @@ export default class UI {
     }
 
     static onLoad(){
+        const DefaultProject = new Project("Default")
+        Storage.addProject(DefaultProject)
         this.getDefaultData().todolist.getProjects().forEach(project => {
             if (!document.getElementById(project.getName())){
                 UI.createProjectDOM(project)
@@ -40,8 +43,9 @@ export default class UI {
         if (["Inbox", "Today", "This week"].includes(project.getName())){
             this.getDOMElements().defaultProjectDiv.appendChild(projectElem)
         } else {
-            this.getDOMElements().customProjectDiv.prepend(projectElem)
-        }
+            this.getDOMElements().customProjectDiv.insertBefore(projectElem, document.querySelector(".project.input"))
+            }
+            
     }
 
     static displayProjectContent(project){
@@ -105,7 +109,8 @@ export default class UI {
         const addProjectInput = document.querySelector(".input.project")
         const currentProject = document.querySelector(".active")
         const projects = document.querySelectorAll(".projects")
-        const errorMessage = document.getElementById("validation-error")
+        const errorMessageTask = document.querySelector(".error.task")
+        const errorMessageProject = document.querySelector(".error.project")
         const deleteBtn = document.querySelectorAll(".delete")
 
         return {
@@ -119,7 +124,7 @@ export default class UI {
             addProjectInput,
             currentProject,
             projects,
-            errorMessage, deleteBtn
+            errorMessageTask, deleteBtn, errorMessageProject
         }
     }
 
@@ -129,9 +134,60 @@ export default class UI {
                 UI.handleProjectClick(e.target.closest("li"))
             })
             )
-        // this.getDOMElements().btnAddProject.addEventListener("click", UI.displayProjectModal())
-        this.handleKeyboard()
-    }
+        this.getDOMElements().btnAddProject.addEventListener("click", () => {
+            const addProjectInput = document.getElementById("addProject")
+            addProjectInput.style.display = "flex"
+            addProjectInput.focus()
+            addProjectInput.addEventListener("keydown", e => {
+                if (e.key == "Escape"){
+                    e.target.value = ""
+                    addProjectInput.style.display = "none"
+                } else if (e.key == "Enter") {
+                    const newProjectName = e.target.value
+                    if (this.getDefaultData().todolist.getProject(newProjectName)){
+                        this.getDOMElements().errorMessageProject.textContent = "Project already exists"
+                    } else {
+                        let validation = UI.checkInput(newProjectName)
+                    if (!validation) {
+                        console.log("project name is " + newProjectName)
+                        const newProject = new Project(newProjectName)
+                        UI.createProjectDOM(newProject)
+                        Storage.addProject(newProject)
+                        e.target.value = ""
+                        addProjectInput.style.display = "none"
+                    } else {
+                        this.getDOMElements().errorMessageProject.textContent = validation
+                        }
+                    }
+                    
+                } else {
+                    this.getDOMElements().errorMessageProject.textContent = ""
+                    this.getDOMElements().errorMessageProject.style.display = none
+                }
+            })
+            
+        })
+        this.getDOMElements().taskInput.addEventListener("keydown", (e) => {
+            if (e.key == "Enter"){
+                const currentProjectName = UI.getDOMElements().currentProject.id
+                const currentProject = this.getDefaultData().todolist.getProject(currentProjectName)
+                const newTaskName = e.target.value
+                let inputValidation = UI.checkInput(newTaskName)
+                if (!inputValidation){
+                    this.submitTaskModal(currentProject, newTaskName)
+                    this.deleteTaskEvent()
+                } else {
+                    this.getDOMElements().errorMessageTask.textContent = inputValidation
+                    
+                } 
+                } else {
+                    this.getDOMElements().errorMessageTask.textContent = ""
+                    this.getDOMElements().errorMessageTask.style.display = none
+                }
+
+            
+    })
+}
 
 
     static checkInput(inputValue){
@@ -145,15 +201,11 @@ export default class UI {
         }
     }
 
-    static setErrorMessage(div, message){
-        return div.textContent = message
-    }
 
 
     static submitTaskModal(currentProject,newTaskName){
-        console.log(currentProject)
         if (currentProject.getTask(newTaskName)){
-            this.setErrorMessage(this.getDOMElements().errorMessage, "Already exist")
+            this.getDOMElements().errorMessageTask.textContent = "Task already exists"
         } else {
             const newTask = new Task(newTaskName)
             currentProject.addTask(newTask)
@@ -164,6 +216,7 @@ export default class UI {
 
         }
     }
+
 
     static hideDiv(div){
         div.display = "none"
@@ -177,11 +230,11 @@ export default class UI {
         UI.resetTaskList()
         UI.displayProjectContent(currentProject)
         // Add Event Listener delete span
-        this.deleteItem()
+        this.deleteTaskEvent()
 
     }
 
-    static deleteItem(){
+    static deleteTaskEvent(){
         const currentProject = this.getDOMElements().currentProject.id
         const deleteBtn = document.querySelectorAll(".delete")
         deleteBtn.forEach(btn => btn.addEventListener("click", (e) => {
@@ -191,26 +244,9 @@ export default class UI {
         }))
     }
     static handleKeyboard(){
-        document.addEventListener("keydown", (e) => {
-            if (e.key == "Enter"){
-                const currentProjectName = UI.getDOMElements().currentProject.id
-                const currentProject = this.getDefaultData().todolist.getProject(currentProjectName)
-                if (e.target.classList.contains("task")){
-                    let inputValidation = UI.checkInput(e.target.value)
-                    if (!inputValidation){
-                        this.submitTaskModal(currentProject, e.target.value)
-                        this.deleteItem()
-                    } else {
-                        this.setErrorMessage(this.getDOMElements().errorMessage, inputValidation)
-                    }  
-                } 
-            } else {
-                this.setErrorMessage(this.getDOMElements().errorMessage, "")
-                this.hideDiv(this.getDOMElements().errorMessage)
-            }
+        // document.addEventListener
 
-    })
+    }
 }
 
 
-}
