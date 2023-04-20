@@ -1,4 +1,5 @@
 import Task from "./Task"
+import { getWeek, parseISO } from 'date-fns'
 export default class Project {
     constructor(name){
         this.name = name
@@ -33,6 +34,15 @@ export default class Project {
 
     removeTask(taskName){
         this.tasks = this.tasks.filter((task) => task.name !== taskName)
+    }
+
+    getTodayTasks(){
+        return this.tasks.filter(task => task.dueDate === new Date().toJSON().slice(0,10))
+        
+    }
+    getWeekTasks(){
+        const currentWeek = getWeek(new Date())
+        return this.tasks.filter(task => getWeek(parseISO(task.dueDate),1) === currentWeek)
     }
 
 

@@ -23,33 +23,42 @@ export default class Storage {
             )
         });
 
-        return {
-            todolist
-        }
+        return todolist
+        
     }
 
     static addProject(project){
-        const todo = Storage.getTodo().todolist
+        const todo = Storage.getTodo()
         todo.addProject(project)
         Storage.saveData(todo)
     }
 
     static addTask(projectName, task){
-        const todo = Storage.getTodo().todolist
+        const todo = Storage.getTodo()
         todo.getProject(projectName).addTask(task)
         Storage.saveData(todo)
     }
 
     static removeTask(projectName, taskName){
-        const todo = Storage.getTodo().todolist
+        const todo = Storage.getTodo()
         todo.getProject(projectName).removeTask(taskName)
         Storage.saveData(todo)
 
     }
 
     static removeProject(projectName){
-        const todo = Storage.getTodo().todolist
+        const todo = Storage.getTodo()
+        todo.getProject(projectName).getTasks().forEach(task => {
+            Storage.removeTask("Inbox", task)
+        })
         todo.removeProject(projectName)
         Storage.saveData(todo)
     }
+
+    static updateDueDate(projectName, taskName, dueDate){
+        const todo = Storage.getTodo()
+        todo.getProject(projectName).getTask(taskName).setDueDate(dueDate)
+        Storage.saveData(todo)
+    }
+
 }

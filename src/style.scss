@@ -44,7 +44,7 @@ $padding-left: 1.5rem;
         color:$dark-font;
     }
     input[type=text]:placeholder-shown:focus{
-        outline: black 1px solid;
+        outline: none;
     }
 
     input[type=text]:focus:not(:placeholder-shown){
@@ -101,6 +101,7 @@ $padding-left: 1.5rem;
             display: flex;
             flex-direction: column;
             gap: 5rem;
+            width: 20rem;
             ul{
                 list-style: none;
                 display: grid;
@@ -154,7 +155,7 @@ $padding-left: 1.5rem;
             font-size: 2rem;
             display:flex;
             flex-direction: column;
-            align-items: center;
+            // align-items: center;
             h2 {
                 font-family: "Prompt";
                 font-size: 3.5rem;
@@ -168,7 +169,17 @@ $padding-left: 1.5rem;
                 width :60rem;
                 padding :0;
                 overflow: hidden;
-                .task:not(.error){
+                div.task {
+                    display: flex;
+                    align-items: center;
+                    padding-right: $padding-left;
+                }
+                div.task:hover {
+                    background-color: $dark-bg;
+                    color:$light-font;
+                }
+                .task:not(span) {
+                    gap: 2rem;
                     padding: $padding-left $padding-top;
                     background-color: $light-bg;
                     color: $dark-font;
@@ -176,17 +187,10 @@ $padding-left: 1.5rem;
                 }
                 div.task input[type="checkbox"] {
                     appearance: none;
-                }
-                div.task:hover  {
-                    background-color: $dark-bg;
-                    color: $light-font;
-                }
-                div.task {
+                }           
+                div.task span {
                     display: flex;
                     align-items: center;
-                    padding-right: $padding-left;
-                }
-                div.task span {
                     margin-left: auto;
                 }
                 div.task input:checked + label{
@@ -197,7 +201,7 @@ $padding-left: 1.5rem;
                 }
                 div.task:has(> input:checked){
                     background-color: $light-bg;
-                    color:$dark-font
+                    color:$dark-font;
                 }
                 input[type=text].task {
                     border-style: none;

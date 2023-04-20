@@ -27,7 +27,7 @@
   color: rgb(48, 52, 63);
 }
 :root input[type=text]:placeholder-shown:focus {
-  outline: black 1px solid;
+  outline: none;
 }
 :root input[type=text]:focus:not(:placeholder-shown) {
   outline: none;
@@ -77,6 +77,7 @@
   display: flex;
   flex-direction: column;
   gap: 5rem;
+  width: 20rem;
 }
 :root body .sidebar ul {
   list-style: none;
@@ -124,7 +125,6 @@
   font-size: 2rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 :root body .main-content h2 {
   font-family: "Prompt";
@@ -140,7 +140,17 @@
   padding: 0;
   overflow: hidden;
 }
-:root body .main-content div.todolist .task:not(.error) {
+:root body .main-content div.todolist div.task {
+  display: flex;
+  align-items: center;
+  padding-right: 1.5rem;
+}
+:root body .main-content div.todolist div.task:hover {
+  background-color: #5A7684;
+  color: #FFFFFB;
+}
+:root body .main-content div.todolist .task:not(span) {
+  gap: 2rem;
   padding: 1.5rem 2rem;
   background-color: #F4F4ED;
   color: rgb(48, 52, 63);
@@ -149,16 +159,9 @@
 :root body .main-content div.todolist div.task input[type=checkbox] {
   appearance: none;
 }
-:root body .main-content div.todolist div.task:hover {
-  background-color: #5A7684;
-  color: #FFFFFB;
-}
-:root body .main-content div.todolist div.task {
+:root body .main-content div.todolist div.task span {
   display: flex;
   align-items: center;
-  padding-right: 1.5rem;
-}
-:root body .main-content div.todolist div.task span {
   margin-left: auto;
 }
 :root body .main-content div.todolist div.task input:checked + label {
