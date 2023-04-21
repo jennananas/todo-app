@@ -101,7 +101,7 @@ $padding-left: 1.5rem;
             display: flex;
             flex-direction: column;
             gap: 5rem;
-            width: 20rem;
+            // width: 25rem;
             ul{
                 list-style: none;
                 display: grid;
@@ -146,6 +146,9 @@ $padding-left: 1.5rem;
             input[type=text]::placeholder {
                 font-size: 1.5rem;
             }
+            span.delete:hover {
+                cursor: pointer;
+            }
 
         }
 
@@ -155,7 +158,6 @@ $padding-left: 1.5rem;
             font-size: 2rem;
             display:flex;
             flex-direction: column;
-            // align-items: center;
             h2 {
                 font-family: "Prompt";
                 font-size: 3.5rem;
@@ -177,6 +179,7 @@ $padding-left: 1.5rem;
                 div.task:hover {
                     background-color: $dark-bg;
                     color:$light-font;
+                    cursor: pointer;
                 }
                 .task:not(span) {
                     gap: 2rem;
@@ -195,12 +198,12 @@ $padding-left: 1.5rem;
                 }
                 div.task input:checked + label{
                     text-decoration: line-through ;
+                    
                 }
                 div.task label:hover, div.task span:hover {
                     cursor: pointer;
                 }
                 div.task:has(> input:checked){
-                    background-color: $light-bg;
                     color:$dark-font;
                 }
                 input[type=text].task {

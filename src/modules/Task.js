@@ -1,10 +1,8 @@
-import { parseJSON } from "date-fns";
-import format from "date-fns/format";
-
 export default class Task {
     constructor(name, dueDate = new Date().toJSON().slice(0,10)) {
         this.name = name;
         this.dueDate = dueDate
+
     }
 
     getName() {
